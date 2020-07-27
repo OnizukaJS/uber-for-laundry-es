@@ -8,7 +8,7 @@ Ahora tenemos algunos usuarios que son lavanderos y otros que no lo son.
 
 Para mostrar la lista de lavanderos, haremos que los usuarios visiten la página /launderers. Eso significa que necesitamos agregar una ruta para /launderers.
 
-En las líneas 9-16 en routes/laundry.js puede ver la nueva ruta:
+Añada la nueva ruta GET /launderers después de las demás rutas en routes/laundry.js
 
 ```js
 // ... inside of routes/laundry.js

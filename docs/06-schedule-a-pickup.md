@@ -2,7 +2,7 @@
 
 Ahora que podemos ver la lista de lavanderos, seleccionemos un lavandero y programemos una recolección. En la lista de lavanderos, cada lavandero tiene un link para programar una recogida. Se supone que ese link lo llevará a una página de perfil del lavandero donde puede programar su recolección. ¡Hagamos una ruta para esa página!
 
-La ruta en cuestión es /launderers/:id. Lo agregaremos en las líneas 57-65 en routes/laundry.js:
+La ruta en cuestión es /launderers/:id. Lo agregaremos después de las demás rutas en routes/laundry.js:
 
 ```js
 // ... inside of routes/laundry.js
@@ -43,14 +43,14 @@ Aspectos destacados de la ruta /launderers/:id
 
 Visite la página /launderer/:id y verá un formulario para programar una recolección con ese usuario. Cuando se envíe ese formulario, debemos guardar la recolección de ropa en la base de datos. Ya tenemos el código para el modelo LaundryPickup en models/laundry-pickup.js. Solo necesitamos requerirlo y usarlo en nuestra ruta POST.
 
-Vea la nueva línea 5 en routes/laundry.js:
+Agregamos esta línea en routes/laundry.js:
 
 ```js
 // routes/laundry.js
 const express = require('express');
 
 const User = require('../models/user');
-const LaundryPickup = require('../models/laundry-pickup');
+const LaundryPickup = require('../models/laundry-pickup'); // <= AÑADIR
 
 const router = express.Router();
 // ...

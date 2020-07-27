@@ -50,7 +50,7 @@ module.exports = router;
 
 La ruta /signup renderiza la vista de views/auth/signup.hbs. Observe la variable local errorMessage. Está ahí para mostrar mensajes o feedback al usuario. Cuando visita la página por primera vez, el mensaje está en blanco (empty string).
 
-La ruta /signup contiene un formulario que el usuario completará para registrarse en la aplicación. En otras palabras, el formulario se enviará a una ruta POST que requerirá que guardemos la información del usuario en la base de datos. Ya tenemos el código para nuestro modelo User en models/user.js, pero no hemos incluido Mongoose en la aplicación.
+La ruta GET /signup renderiza un formulario que el usuario completará para registrarse en la aplicación. En otras palabras, el formulario se enviará a una ruta POST que requerirá que guardemos la información del usuario en la base de datos. Ya tenemos el código para nuestro modelo User en models/user.js, pero no hemos incluido Mongoose en la aplicación.
 
 Además de guardar cosas en la base de datos, el registro en nuestra aplicación requerirá que encriptemos la contraseña del usuario.
 

@@ -2,7 +2,7 @@
 
 Ahora que hemos iniciado sesión, necesitamos poder cerrar sesión. Tenemos links a la ruta /logout en nuestra aplicación, solo tenemos que definir esa ruta.
 
-Aquí está el código para la ruta en las líneas 101-115 en routes/auth.js:
+Añadir el siguiente código después de las rutas de signup y login":
 
 ```js
 // ... inside of routes/auth.js

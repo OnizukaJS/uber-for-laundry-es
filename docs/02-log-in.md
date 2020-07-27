@@ -22,7 +22,7 @@ module.exports = router;
 
 La ruta /login renderiza la vista de views/auth/login.hbs. Observe nuevamente que tenemos una variable local errorMessage. La usaremos para dar feedback al usuario después de que envíe el formulario. Cuando visitamos por primera vez la página de inicio de sesión, errorMessage estará vacía.
 
-La ruta /login contiene un formulario que el usuario enviará para autenticarse con la aplicación. En otras palabras, el formulario se enviará a una ruta POST que requerirá crear una sesión para ese usuario. El siguiente paso será configurar session.
+La ruta GET /login renderiza un formulario que el usuario enviará para autenticarse con la aplicación. En otras palabras, el formulario se enviará a una ruta POST que requerirá crear una sesión para ese usuario. El siguiente paso será configurar session.
 
 Instale express-session y connect-mongo en la terminal: 
 
@@ -39,7 +39,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-const index = require('./routes/index');
+const indexRouter = require('./routes/index');
 // ...
 ```
 
@@ -61,7 +61,7 @@ app.use(session({
   })
 }));
 
-app.use('/', index);
+app.use('/', indexRouter);
 // ...
 ```
 

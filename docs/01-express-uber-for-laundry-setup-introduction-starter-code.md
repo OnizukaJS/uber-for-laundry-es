@@ -20,6 +20,16 @@ Ejecute npm install para obtener todos los módulos del archivo package.json.
 $ npm install
 ```
 
+## .gitignore
+
+Creamos el archivo .gitignore en la raíz de nuestro proyecto:
+
+```
+node_modules    # Dependency directory
+npm-debug.log   # Debug log from npm
+.env            # Environment Variables should NEVER be published
+```
+
 ## Introducción
 
 Seamos realistas: todo el mundo tiene que lavar la ropa. Incluso Batman.
@@ -84,5 +94,7 @@ El código inicial para este proyecto incluye:
 ```
 
 Si visita la página de inicio (homepage), verá que hay un montón de links que no funcionan. Agregaremos las rutas para cada una de esas páginas como parte de esta lección.
+
+Para iniciar el servidor con nodemon, puede usar el siguiente comando: ```npm run dev```
 
 ¡Vamos a escribir código!
