@@ -13,8 +13,8 @@ Tenemos que asegurarnos de conectar routes/auth.js con app.js. Podemos hacer est
 ```js
 // ... inside of app.js
 
-const index = require('./routes/index');
-const authRoutes = require('./routes/auth');
+const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth'); // <<<< ESTA LINEA
 
 const app = express();
 // ...
@@ -25,8 +25,8 @@ También necesitamos configurar nuestra variable en app para usar esas rutas en 
 ```js
 // ... inside of app.js
 
-app.use('/', index);
-app.use('/', authRoutes);
+app.use('/', indexRouter);
+app.use('/', authRouter); // <<<< ESTA LINEA
 ```
 
 Ahora que las rutas están en su lugar, podemos agregar el contenido en routes/auth.js:

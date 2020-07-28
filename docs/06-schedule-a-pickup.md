@@ -33,15 +33,15 @@ module.exports = router;
 
 Aspectos destacados de la ruta /launderers/:id
 
-    Línea 57: toma el id del parámetro del URL.
+    Línea 58: toma el id del parámetro del URL.
     
-    Líneas 60: llama al método findById() de Mongoose para recuperar los detalles del lavador.
+    Líneas 62-66: llama al método findById() de Mongoose para recuperar los detalles del lavador.
     
-    Líneas 66-68: renderiza la plantilla views/laundry/launderer-profile.hbs
+    Líneas 68-70: renderiza la plantilla views/laundry/launderer-profile.hbs
     
     Líneas 67: pasa la información del perfil del lavandero (theUser) como la variable local theLaunderer.
 
-Visite la página /launderer/:id y verá un formulario para programar una recolección con ese usuario. Cuando se envíe ese formulario, debemos guardar la recolección de ropa en la base de datos. Ya tenemos el código para el modelo LaundryPickup en models/laundry-pickup.js. Solo necesitamos requerirlo y usarlo en nuestra ruta POST.
+Visite la página /launderers/:id (link de Schedule a Pickup) y verá un formulario para programar una recolección con ese usuario. Cuando se envíe ese formulario, debemos guardar la recolección de ropa en la base de datos. Ya tenemos el código para el modelo LaundryPickup en models/laundry-pickup.js. Solo necesitamos requerirlo y usarlo en nuestra ruta POST.
 
 Agregamos esta línea en routes/laundry.js:
 
@@ -101,15 +101,15 @@ module.exports = router;
 
 Aspectos destacados de la ruta POST /laundry-pickups:
 
-    Líneas 75-81: crea una instancia del modelo LaundryPickup con las propiedades correctas.
+    Líneas 76-80: crea una instancia del modelo LaundryPickup con las propiedades correctas.
     
-    Líneas 76-77: las propiedades pickupDate y launderer provienen del formulario. El input del lavandero es una etiqueta <input> con type="hidden". ¡Comprueba el HTML!
+    Líneas 77-78: las propiedades pickupDate y launderer provienen del formulario. El input del launderer es una etiqueta <input> con type="hidden". ¡Comprueba el HTML!
     
-    Línea 78: toma nuevamente el _id del usuario de la sesión.
+    Línea 79: toma nuevamente el _id del usuario de la sesión.
     
-    Línea 83: llama al método modelo save() de Mongoose para guardar realmente la recogida en la base de datos.
+    Línea 84: llama al método modelo save() de Mongoose para guardar realmente la recogida en la base de datos.
     
-    Línea 89: si todo sale según lo planeado, redirige nuevamente al dashboard.
+    Línea 90: si todo sale según lo planeado, redirige nuevamente al dashboard.
 
 
 ¡Ahora podemos programar una recogida! Podemos verificar que funcionó yendo a MongoDB Compass y consultando la base de datos.

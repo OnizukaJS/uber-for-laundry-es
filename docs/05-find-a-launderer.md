@@ -38,11 +38,11 @@ module.exports = router;
 
 Aspectos destacados de la ruta /launderers:
 
-    Línea 45: consulta usuarios cuya propiedad isLaunderer es verdadera.
+    Línea 46: consulta usuarios cuya propiedad isLaunderer es verdadera.
     
-    Líneas 51-53: renderiza la plantilla views/laundry/launderers.hbs
+    Líneas 52-54: renderiza la plantilla views/laundry/launderers.hbs
     
-    Líneas 52: pasa los resultados de la consulta (launderersList) como la variable local launderers.
+    Líneas 53: pasa los resultados de la consulta (launderersList) como la variable local launderers.
 
 
 Visite la página para ver la lista de lavanderos.

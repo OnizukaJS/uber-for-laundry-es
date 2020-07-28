@@ -35,9 +35,12 @@ Ahora necesitaremos tanto express-session como connect-mongo en app.js:
 ```js
 // ... inside of app.js
 const bodyParser = require('body-parser');
+const favicon = require('serve-favicon');
+const hbs = require('hbs');
 const mongoose = require('mongoose');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+
+const session = require('express-session'); // <<<< ESTA LINEA
+const MongoStore = require('connect-mongo')(session); // <<<< ESTA LINEA
 
 const indexRouter = require('./routes/index');
 // ...
@@ -49,7 +52,7 @@ Luego configuramos session y la agregamos como middleware a nuestra aplicación.
 // ... inside of app.js
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+// AGREGAMOS EL SIGUIENTE BLOQUE
 app.use(session({
   secret: 'never do your own laundry again',
   resave: true,
@@ -114,11 +117,11 @@ module.exports = router;
 
 Aspectos destacados de esta ruta POST:
 
-    Línea 75: encuentra al usuario por su email.
+    Línea 81: encuentra al usuario por su email.
     
-    Línea 83: utiliza el método compareSync() para verificar la contraseña.
+    Línea 89: utiliza el método compareSync() para verificar la contraseña.
     
-    Línea 90: si todo funciona, guarda la información del usuario en req.session.
+    Línea 96: si todo funciona, guarda la información del usuario en req.session.
 
 Así que hemos iniciado sesión, pero no lo sabría simplemente mirando la página de inicio. ¡Se ve igual que antes! Necesitamos personalizar la homepage para los usuarios registrados. Sin embargo, antes de hacer eso, hagamos que sea más fácil verificar el estado de inicio de sesión en la vista.
 
@@ -138,7 +141,7 @@ app.use(session({
     ttl: 24 * 60 * 60 // 1 day
   })
 }));
-
+// AGREGAMOS ESTE BLOQUE
 app.use((req, res, next) => {
   if (req.session.currentUser) {
     res.locals.currentUserInfo = req.session.currentUser;

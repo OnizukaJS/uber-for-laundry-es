@@ -39,7 +39,6 @@ const express = require('express');
 
 const router = express.Router();
 
-
 router.get('/dashboard', (req, res, next) => {
   res.render('laundry/dashboard');
 });
@@ -59,7 +58,6 @@ const express = require('express');
 const User = require('../models/user');
 
 const router = express.Router();
-
 
 router.get('/dashboard', (req, res, next) => {
   res.render('laundry/dashboard');
@@ -138,11 +136,11 @@ Aquí está nuestra plantilla actualizada views/laundry/dashboard.hbs:
 Aspectos destacados de views/laundry/dashboard.hbs:
 
 
-    Líneas 8-13: tenemos una declaración if que muestra un nuevo HTML si el usuario ya es un launderer.
+    Líneas 9-12: tenemos una declaración if que muestra un nuevo HTML si el usuario ya es un launderer.
     
-    Líneas 15-22: el formulario que antes estaba allí ahora se muestra en el else.
+    Líneas 14-23: el formulario que antes estaba allí ahora se muestra en el else.
 
-Resultado final: si aún no eres un lavandero, verás el formulario y, si lo eres, verás un mensaje y la tarifa.
+Resultado final: si aún no eres un lavandero, verás el formulario y, si lo eres, verás un mensaje y el precio.
 
 Finalmente, debemos agregar alguna autorización a nuestro dashboard. Tal como está, incluso si no estás logueado, y visitas la página /dashboard directamente podrá verla.
 
@@ -177,8 +175,8 @@ Este middleware se ejecuta antes que cualquiera de nuestras rutas.
 
 Destacar:
 
-    Líneas 8-11: si hay un usuario en la sesión (logueado), continúa con las rutas llamando a next() y retornando.
+    Líneas 9-12: si hay un usuario en la sesión (logueado), continúa con las rutas llamando a next() y retornando.
     
-    Línea 13: si no hay ningún usuario en la sesión (anónimo), redirige a la página log in.
+    Línea 14: si no hay ningún usuario en la sesión (anónimo), redirige a la página log in.
 
 Siguiente - Encuentra un Launderer.
