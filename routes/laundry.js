@@ -1,5 +1,6 @@
 var express = require('express');
 const User = require('../models/user');
+const LaundryPickup = require('../models/laundry-pickup');
 var router = express.Router();
 
 //Toutes les pages de "Laundry" sont accessibles même sans être loggedIn du coup on ajoute ce Middleware avant toutes les routes. Si le user n'ext pas loggedIn, il est redirigé vers "Login"
@@ -59,6 +60,50 @@ router.get('/launderers', (req, res, next) => {
             //Passe les résultats de la consultation (launderersList) comme variable locale "launderers"
             launderers: launderersList
         });
+    });
+});
+
+//On recupère l'ID en paramètre dans l'URL
+router.get('/launderers/:id', (req, res, next) => {
+    const laundererId = req.params.id;
+
+    //Utilisation de la méthode findById() de Mongoose pour récupérer les détails du lavador en question
+    User.findById(laundererId, (err, theUser) => {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        //Renderise la page
+        res.render('laundry/launderer-profile.hbs', {
+            //Passe les résultats de la consultation (theUser) comme variable locale "theLaunderer"
+            theLaunderer: theUser
+        });
+    });
+});
+
+//Route POST une fois que le form de "launderer-profile" a été soumis pour l'envoyer à laundry-pickup.js
+router.post('/laundry-pickups', (req, res, next) => {
+    const pickupInfo = {
+        //Info qu'on va chercher du form de "launderer-profile"
+        pickupDate: req.body.pickupDate,
+        //Input "hidden" du formulaire pour avoir l'ID
+        launderer: req.body.laundererId,
+        //Récupère de nouveau l'ID
+        user: req.session.currentUser._id
+    };
+
+    const thePickup = new LaundryPickup(pickupInfo);
+
+    //On appelle la méthode save() de Mongoose pour sauvegarder le pickup dans la BDD sous le nom laundrypickupS. Ce nom proviens du modèle LaundryPickup et la BDD créée automatiquement le nom de la collection laundrypickups (modèle = 1ère lettre en maj. et au singulier | collection = toujours en minuscule et au pluriel)
+    thePickup.save((err) => {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        //Si tout va bien, on est redirigé.
+        res.redirect('/dashboard');
     });
 });
 
