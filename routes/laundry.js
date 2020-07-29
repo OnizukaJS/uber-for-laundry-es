@@ -15,7 +15,40 @@ router.use((req, res, next) => {
 /* GET laundry page. */
 //La route /dashboard renderise la vue views/laundry/dashboard.hbs. 
 router.get('/dashboard', (req, res, next) => {
-    res.render('laundry/dashboard.hbs')
+    let query;
+
+    //Change la consulta en fonction de si on est un lavador ou non. 
+    //Si l'utilisateur est un laveur de vêtements, on cherche "recoger ropa para lavar". Sinon, on affiche "recogidas de ropa".
+    if (req.session.currentUser.isLaunderer) {
+        query = {
+            launderer: req.session.currentUser._id
+        };
+    } else {
+        query = {
+            user: req.session.currentUser._id
+        };
+    }
+
+    //Appel de plusieurs méthodes Mongoose afin de faire une consultation plus compliquée qui se finalise par exec() pour fournir notre callback
+    LaundryPickup
+        .find(query)
+        //Lignes 36-37: Étant donné que les propriétés utilisateur et launderer sont des références à d'autres documents, nous demandons que ces références soient préremplies avec la propriété Nom du modèle utilisateur.
+        .populate('user', 'name')
+        .populate('launderer', 'name')
+        //Trier par date de collecte dans l'ordre croissant
+        .sort('pickupDate')
+        .exec((err, pickupDocs) => {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            //Renderise la page views/laundry/dashboard
+            res.render('laundry/dashboard.hbs', {
+                //On passe le résultat de la consultation (pickupDocs) dans la variable locale pickups
+                pickups: pickupDocs
+            });
+        });
 });
 
 //Cette page contient un formulaire que le user enverra pour devenir un lavandero.
