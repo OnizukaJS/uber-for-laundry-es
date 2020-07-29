@@ -7,10 +7,15 @@
 
 ## Setup
 
-Clone el repositorio de Uber For Laundry en su carpeta ~/code/lab para obtener el código inicial.
+Hacemos fork de este repositorio:
+
+https://github.com/danieljdsgit/uber-for-laundry-es.git
+
+Luego clonamos el repositorio de Uber For Laundry en la carpeta ~/code/lab para obtener el código inicial.
 
 ```
-$ git clone https://github.com/danieljdsgit/uber-for-laundry-es.git
+$ git clone https://github.com/githubaccount/uber-for-laundry-es.git
+
 $ cd uber-for-laundry-es/
 ```
 
