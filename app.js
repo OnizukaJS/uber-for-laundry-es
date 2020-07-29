@@ -40,7 +40,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 // Middleware Setup
-
 app.use(logger('dev'));
 app.use(express.urlencoded({
   extended: false
@@ -68,9 +67,9 @@ app.use((req, res, next) => {
     //La información del usuario de la sesión (solo disponible si ha iniciado sesión).
     res.locals.currentUserInfo = req.session.currentUser;
     //Un booleano que indica si hay un usuario conectado o no.
-    res.locals.isUserLoggedIn = true;
+    res.locals.userIsLoggedIn = true;
   } else {
-    res.locals.isUserLoggedIn = false;
+    res.locals.userIsLoggedIn = false;
   }
 
   next();
@@ -78,8 +77,10 @@ app.use((req, res, next) => {
 
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
+//Quand on initialise, on veut préférer aller voir indexRouter
 app.use('/', indexRouter);
 app.use('/', authRouter);
+//Là on ajoutera nos "pages privées"
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

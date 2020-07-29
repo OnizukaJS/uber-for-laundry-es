@@ -1,11 +1,12 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
 
-<!--Si le user est co, on affiche son nom et des options-->
+<!--Si le user est co, on affiche son nom-->
 {{#if userIsLoggedIn}}
 <p>Hello, {{currentUserInfo.name}}</p>
 {{/if}}
 
+<!--on change également le menu-->
 {{#if userIsLoggedIn}}
 <li><a href="/launderers">Find a Launderer</a></li>
 <li> <a href="/dashboard"> See Dashboard </a> </li>
@@ -13,5 +14,4 @@
 {{else}}
 <li> <a href="/signup"> Sign Up </a> </li>
 <li> <a href="/login"> Log In </a> </li>
-
 {{/if}}

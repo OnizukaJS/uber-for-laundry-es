@@ -1,12 +1,14 @@
 const express = require('express')
 const router = express.Router();
 
+//Pour encrypter les passwords
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
+//Le modèle User que nous utilisons
 const User = require('./../models/user');
 
-//Get /signup --> renderizar el formulario de signup
+//Si nous visitons /signup, il va aller chercher/renderiser (get) le fichier auth/signup.hbs et l'afficher à l'écran
 router.get('/signup', (req, res, next) => {
     console.log('Entra en signup');
     //Message vide mais on le créé au cas où on veut laisser un mess au user
@@ -16,6 +18,7 @@ router.get('/signup', (req, res, next) => {
 })
 
 //POST /signup --> recoger los datos del formulario y crear un nuevo usario en la BDD
+//Comme notre form de signup.hbs est en method="POST" et action /signup, on fait un router.post pour récupérer toutes les infos
 //on rentre dans signup pour récup les données
 router.post('/signup', (req, res, next) => {
     //console.log('req.body:', req.body);
@@ -47,6 +50,7 @@ router.post('/signup', (req, res, next) => {
 
             //Si le user n'existe pas, on encrypte le pass
             const salt = bcrypt.genSaltSync(saltRounds);
+            //Ce n'est pas obligé de rajouter "salt" car il a une valeur par défaut mais on le met car on a précisé nous-même "10" salt plus haut
             const hashedPassword = bcrypt.hashSync(password, salt);
 
             //Garder le user dans la BDD
@@ -73,7 +77,7 @@ router.post('/signup', (req, res, next) => {
         .catch((err) => console.log(err));
 })
 
-//Finalisation de la route POST qui va recevoir l'envoie du formulaire du login:
+//Si nous visitons /login, il va aller chercher (get) le fichier auth/login.hbs et l'afficher à l'écran
 router.get('/login', (req, res, next) => {
     console.log('Enter en Login');
     res.render('auth/login.hbs', {
@@ -81,7 +85,9 @@ router.get('/login', (req, res, next) => {
     });
 });
 
+//Finalisation de la route POST qui va recevoir l'envoie du formulaire du login:
 router.post('/login', (req, res, next) => {
+    //On récupère les données du formulaire
     const {
         email,
         password
@@ -94,6 +100,7 @@ router.post('/login', (req, res, next) => {
         return;
     }
 
+    //Si aucun des 2 champs sont vides, on va chercher dans la BD s'il existe un utilisateur avec les données du formulaire
     User.findOne({
         email
     }, (err, theUser) => {
@@ -116,6 +123,23 @@ router.post('/login', (req, res, next) => {
         //Si tout est bon, la session peut commencer et on redirige le user vers la home page
         req.session.currentUser = theUser;
         res.redirect('/')
+    });
+});
+
+//Code afin de pouvoir faire le logout
+router.get('/logout', (req, res, next) => {
+    //S'il n'y a pas de user co, on redirige simplement vers la home
+    if (!req.session.currentUser) {
+        res.redirect('/');
+        return;
+    }
+
+    req.session.destroy((err) => {
+        if (err) {
+            next(err);
+            return;
+        }
+        res.redirect('/');
     });
 });
 
