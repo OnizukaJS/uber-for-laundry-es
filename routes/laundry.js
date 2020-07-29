@@ -44,4 +44,22 @@ router.post('/launderers', (req, res, next) => {
     });
 });
 
+router.get('/launderers', (req, res, next) => {
+    //On recherche les utilisateurs avec l'option "isLaunderer: true"
+    User.find({
+        isLaunderer: true
+    }, (err, launderersList) => {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        //Renderise la page laundry/launderers.hbs
+        res.render('laundry/launderers.hbs', {
+            //Passe les résultats de la consultation (launderersList) comme variable locale "launderers"
+            launderers: launderersList
+        });
+    });
+});
+
 module.exports = router;
