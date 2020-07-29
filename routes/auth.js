@@ -1,5 +1,5 @@
 const express = require('express')
-const authRouter = express.Router();
+const router = express.Router();
 
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
@@ -7,7 +7,7 @@ const saltRounds = 10;
 const User = require('./../models/user');
 
 //Get /signup --> renderizar el formulario de signup
-authRouter.get('/signup', (req, res, next) => {
+router.get('/signup', (req, res, next) => {
     console.log('Entra en signup');
     //Message vide mais on le créé au cas où on veut laisser un mess au user
     res.render('auth/signup.hbs', {
@@ -17,7 +17,7 @@ authRouter.get('/signup', (req, res, next) => {
 
 //POST /signup --> recoger los datos del formulario y crear un nuevo usario en la BDD
 //on rentre dans signup pour récup les données
-authRouter.post('/signup', (req, res, next) => {
+router.post('/signup', (req, res, next) => {
     //console.log('req.body:', req.body);
     const {
         name,
@@ -73,6 +73,50 @@ authRouter.post('/signup', (req, res, next) => {
         .catch((err) => console.log(err));
 })
 
+//Finalisation de la route POST qui va recevoir l'envoie du formulaire du login:
+router.get('/login', (req, res, next) => {
+    console.log('Enter en Login');
+    res.render('auth/login.hbs', {
+        errorMessage: ''
+    });
+});
 
+router.post('/login', (req, res, next) => {
+    const {
+        email,
+        password
+    } = req.body;
 
-module.exports = authRouter;
+    if (email === '' || password === '') {
+        res.render('auth/login', {
+            errorMessage: 'Please enter both email and password'
+        });
+        return;
+    }
+
+    User.findOne({
+        email
+    }, (err, theUser) => {
+        //Si le user n'existe pas
+        if (err || theUser === null) {
+            res.render('auth/login', {
+                errorMessage: `The account ${email} doesn't exist`
+            });
+            return;
+        }
+
+        //Si le user existe, on compare que le mdp soit le même que celui de la BDD
+        if (!bcrypt.compareSync(password, theUser.password)) {
+            res.render('auth/login', {
+                errorMessage: 'Invalid password'
+            });
+            return;
+        }
+
+        //Si tout est bon, la session peut commencer et on redirige le user vers la home page
+        req.session.currentUser = theUser;
+        res.redirect('/')
+    });
+});
+
+module.exports = router;

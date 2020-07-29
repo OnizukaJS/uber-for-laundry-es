@@ -11,6 +11,10 @@ const favicon = require('serve-favicon');
 const hbs = require('hbs');
 const mongoose = require('mongoose');
 
+//Nous avons besoin d'express session & connect-mongo pour créer une session pour le user récemment créé
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
 mongoose
   .connect('mongodb://localhost/uber-for-laundry', {
     useNewUrlParser: true,
@@ -44,6 +48,33 @@ app.use(express.urlencoded({
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Configuration de la session et ajout en tant que middleware:
+app.use(session({
+  secret: 'Never do your own laundry again',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 60000
+  },
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+    ttl: 24 * 60 * 60 //Combien de temps dure le cookir (1 jour)
+  })
+}));
+//Pour vérifier l'état de l'initialisation de la session, ce middleware nous permettra de personnaliser la homepage plus facilement dans views/index.hbs
+app.use((req, res, next) => {
+  if (req.session.currentUser) {
+    //La información del usuario de la sesión (solo disponible si ha iniciado sesión).
+    res.locals.currentUserInfo = req.session.currentUser;
+    //Un booleano que indica si hay un usuario conectado o no.
+    res.locals.isUserLoggedIn = true;
+  } else {
+    res.locals.isUserLoggedIn = false;
+  }
+
+  next();
+})
 
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
