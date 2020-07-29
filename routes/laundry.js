@@ -79,9 +79,17 @@ router.post('/launderers', (req, res, next) => {
 });
 
 router.get('/launderers', (req, res, next) => {
-    //On recherche les utilisateurs avec l'option "isLaunderer: true"
+    //On recherche les utilisateurs avec l'option "isLaunderer: true" et que l'ID ne soit pas le nôtre afin de ne pas s'afficher soit-même
     User.find({
-        isLaunderer: true
+        $and: [{
+                isLaunderer: true
+            },
+            {
+                _id: {
+                    $ne: req.session.currentUser._id
+                }
+            }
+        ]
     }, (err, launderersList) => {
         if (err) {
             next(err);
