@@ -5,7 +5,12 @@
     <li> <a href="/logout"> Log Out </a> </li>
 </ul>
 
+{{#if currentUserInfo.isLaunderer}}
+<h3>You are now a launderer</h3>
 
+<p>Your laundering fee is set up to <b>{{currentUserInfo.fee}}</b>€. </p>
+
+{{else}}
 <h3> Want to become a launderer? </h3>
 
 <form action="/launderers" method="post">
@@ -16,3 +21,4 @@
 
     <button> Become a Launderer </button>
 </form>
+{{/if}}
